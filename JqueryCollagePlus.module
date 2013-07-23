@@ -69,7 +69,7 @@ class JqueryCollagePlus extends WireData implements Module {
 	public function load($admin = false) {
 		$config = wire('config'); 
 		$url = $config->urls->JqueryCollagePlus; 
-		$cpurl = $url . 'collageplus-' . self::collagePlusVersion . '/';
+		$cpurl = $url . 'collagePlus-' . self::collagePlusVersion . '/';
 		$config->scripts->add($cpurl . 'jquery.collagePlus.js'); 
 		if($admin) {
 			$config->scripts->add($cpurl . 'extras/jquery.removeWhitespace.min.js'); 

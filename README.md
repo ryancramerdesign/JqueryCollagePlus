@@ -10,26 +10,6 @@ To use, simply install the module and it is ready to go.
 
 <img src='https://raw.github.com/ryancramerdesign/JqueryCollagePlus/master/screenshot.jpg'>
 
-## Other uses
-
-This module can also serve as a wrapper to the jQuery CollagePlus 
-library for your own needs. To use it that way you would just:
-
-```
-$collagePlus = $modules->get('JqueryCollagePlus'); 
-$collagePlus->load(); 
-```
-That load() function above populates `$config->scripts` and
-`$config->styles` with all the needed javascript/styles.
-Of course, you could also just reference those files yourself,
-if preferred, example: 
-
-```
-<script src='<?=$config->urls->JqueryCollagePlus?>collagePlus-0.3.0/jquery.collagePlus.js'></script>
-```
-
-## Credits
-
 [CollagePlus jQuery plugin](http://ed-lea.github.io/jquery-collagePlus/)
 is by [Ed Lea](http://qiip.me/edlea/).
 
