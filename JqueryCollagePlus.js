@@ -21,6 +21,7 @@ function initCollagePlus() {
 		'fadeSpeed': 'fast',
 		'effect': 'effect-4',
 		'direction': 'vertical',
+		'allowPartialLastRow': true
 		});
 
 	if(collagePlusCounter == 1) $container.collageCaption({
@@ -34,11 +35,9 @@ function initCollagePlus() {
 
 }
 
-$(window).load(function() {
-	$(document).ready(function() {
-		// ensures it still works when the iframe src attr is changed
-		// by pwimage plugin for TinyMCE or CKEditor
-		setTimeout('initCollagePlus()', 100); 
-	}); 
+$(document).ready(function() {
+	// ensures it still works when the iframe src attr is changed
+	// by pwimage plugin for TinyMCE or CKEditor
+	setTimeout('initCollagePlus()', 100); 
 }); 
 

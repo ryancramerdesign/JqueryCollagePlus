@@ -25,14 +25,14 @@ class JqueryCollagePlus extends WireData implements Module {
 
 		return array(
 			'title' => 'Collage Plus', 
-			'version' => 1, 
+			'version' => 2, 
 			'summary' => 'Makes the image selection from rich text editors use a grid of images rather than stacked images.',
 			'singular' => true, 
 			'autoload' => "template=admin, process=ProcessPageEditImageSelect", // conditional autoload (PW 2.3.1+)
 			);
 	}
 
-	const collagePlusVersion = '0.3.0';
+	const collagePlusVersion = '0.3.1';
 
 	public function init() { }
 
