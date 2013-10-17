@@ -1,6 +1,6 @@
 /*!
  *
- * jQuery collagePlus Plugin v0.3.1
+ * jQuery collagePlus Plugin v0.3.2
  * https://github.com/ed-lea/jquery-collagePlus
  *
  * Copyright 2012, Ed Lea twitter.com/ed_lea
@@ -24,25 +24,25 @@
 
         var defaults = {
             // the ideal height you want your images to be
-            'targetHeight'    : 400,
+            'targetHeight'          : 400,
             // width of the area the collage will be in
-            'albumWidth'      : this.width(),
+            'albumWidth'            : this.width(),
             // padding between the images. Using padding left as we assume padding is even all the way round
-            'padding'         : parseFloat( this.css('padding-left') ),
+            'padding'               : parseFloat( this.css('padding-left') ),
             // object that contains the images to collage
-            'images'          : this.children(),
+            'images'                : this.children(),
             // how quickly you want images to fade in once ready can be in ms, "slow" or "fast"
-            'fadeSpeed'       : "fast",
+            'fadeSpeed'             : "fast",
             // how the resized block should be displayed. inline-block by default so that it doesn't break the row
-            'display'         : "inline-block",
+            'display'               : "inline-block",
             // which effect you want to use for revealing the images (note CSS3 browsers only),
-            'effect'          : 'default',
+            'effect'                : 'default',
             // effect delays can either be applied per row to give the impression of descending appearance
             // or horizontally, so more like a flock of birds changing direction
-            'direction'       : 'vertical',
+            'direction'             : 'vertical',
             // Sometimes there is just one image on the last row and it gets blown up to a huge size to fit the
             // parent div width. To stop this behaviour, set this to true
-            'allowPartialLastRow' : false
+            'allowPartialLastRow'   : false
         };
 
         var settings = $.extend({}, defaults, options);
@@ -80,7 +80,11 @@
 
                     /*
                      *
-                     * get the current image size
+                     * get the current image size. Get image size in this order
+                     *
+                     * 1. from <img> tag
+                     * 2. from data set from initial calculation
+                     * 3. after loading the image and checking it's actual size
                      *
                      */
                     var w = (typeof $img.data("width") != 'undefined') ? $img.data("width") : $img.width(),
@@ -258,6 +262,13 @@
                     }
                 }
 
+                /*
+                 *
+                 * We'll be doing a few things to the image so here we cache the image selector
+                 *
+                 *
+                 */
+                var $img = ( $obj.is("img") ) ? $obj : $obj.find("img");
 
                 /*
                  *
@@ -269,11 +280,9 @@
                  * to accommodate the css image borders.
                  *
                  */
-                if( $obj.is("img") ){
-                    $obj.width(fw);
-                }else{
+                $img.width(fw);
+                if( !$obj.is("img") ){
                     $obj.width(fw + obj[i][3]);
-                    $obj.find("img").width(fw);
                 }
 
 
@@ -283,11 +292,9 @@
                  * if the resized element is not an image, we apply it to the child image also
                  *
                  */
-                if( $obj.is("img") ){
-                    $obj.height(fh);
-                }else{
+                $img.height(fh);
+                if( !$obj.is("img") ){
                     $obj.height(fh + obj[i][4]);
-                    $obj.find("img").height(fh);
                 }
 
 
@@ -303,24 +310,35 @@
                  *
                  * Assign the effect to show the image
                  * Default effect is using jquery and not CSS3 to support more browsers
+                 * Wait until the image is loaded to do this
                  *
                  */
-		var $img = $obj; // RJC
-		if(!$img.is("img")) $img = $img.find("img"); // RJC
 
-                if( settings.effect == 'default'){
-                    //$obj.animate({opacity: '1'},{duration: settings.fadeSpeed});
-                    $img.animate({opacity: '1'},{duration: settings.fadeSpeed}); // RJC
-                } else {
-                    if(settings.direction == 'vertical'){
-                        var sequence = (rownum <= 10  ? rownum : 10);
-                    } else {
-                        var sequence = (i <= 9  ? i+1 : 10);
+                $img
+                    .load(function(target) {
+                    return function(){
+                        if( settings.effect == 'default'){
+                            target.animate({opacity: '1'},{duration: settings.fadeSpeed});
+                        } else {
+                            if(settings.direction == 'vertical'){
+                                var sequence = (rownum <= 10  ? rownum : 10);
+                            } else {
+                                var sequence = (i <= 9  ? i+1 : 10);
+                            }
+
+                            target.addClass(settings.effect);
+                            target.addClass("effect-duration-" + sequence);
+                        }
                     }
-
-                    $img.addClass(settings.effect); // RJC
-                    $img.addClass("effect-duration-" + sequence); // RJC
-                }
+                    }($obj))
+                    /*
+                     * fix for cached or loaded images
+                     * For example if images are loaded in a "window.load" call we need to trigger
+                     * the load call again
+                     */
+                    .each(function() {
+                            if(this.complete) $(this).trigger('load');
+                    });
 
         }
 
