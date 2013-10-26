@@ -6,13 +6,16 @@
 #select_images li {
 	margin: 0;
 	padding: 0;
+	opacity: 0;
+}
+
+#select_images a {
 }
 
 #select_images a img {
 	vertical-align: bottom;
 	border-width: 1px; 
 	border-color: #ccc; 
-	opacity: 0;
 }
 
 #select_images a:hover img {

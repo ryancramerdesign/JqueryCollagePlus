@@ -35,7 +35,7 @@ function initCollagePlus() {
 
 }
 
-$(document).ready(function() {
+$(window).load(function() {
 	// ensures it still works when the iframe src attr is changed
 	// by pwimage plugin for TinyMCE or CKEditor
 	setTimeout('initCollagePlus()', 100); 
